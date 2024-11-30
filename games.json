@@ -1,0 +1,87 @@
+{
+    "games": [
+      {
+        "category_uuids": [
+          "e86aecef-fe7a-4164-a324-57503df14ab9"
+        ],
+        "price": 5999,
+        "title": "Atomic Heart",
+        "uuid": "1990ecdd-4d3d-4de2-91b9-d45d794c82bc"
+      },
+      {
+        "category_uuids": [
+          "ac949f6c-80f5-40dd-9723-0cd47706060e"
+        ],
+        "price": 5999,
+        "title": "Baldur's Gate 3",
+        "uuid": "0378c074-92d6-4d8c-b6d3-878c08dbe27f"
+      },
+      {
+        "category_uuids": [
+          "78fcb98b-d820-4d79-a049-e2089b7ce87a"
+        ],
+        "price": 5999,
+        "title": "Elden Ring",
+        "uuid": "03dbad48-ad81-433d-9901-dd5332f5d9ee"
+      },
+      {
+        "category_uuids": [
+          "a24db271-1e09-4ddc-b40b-3f2b8875c00b"
+        ],
+        "price": 2499,
+        "title": "Forza Horizon 5",
+        "uuid": "cb620f56-daa4-43e0-b4a0-e80f8e5be279"
+      },
+      {
+        "category_uuids": [
+          "8126d35b-5336-41ad-981d-f245c3e05665"
+        ],
+        "price": 2999,
+        "title": "Red Dead Redemption 2",
+        "uuid": "aca79a7c-5b66-4ff2-b3b8-57e56fc053a7"
+      },
+      {
+        "category_uuids": [
+          "78fcb98b-d820-4d79-a049-e2089b7ce87a"
+        ],
+        "price": 2499,
+        "title": "The Elder Scrolls V: Skyrim",
+        "uuid": "09531e2b-c3eb-4338-a002-cc4817a7cc58"
+      },
+      {
+        "category_uuids": [
+          "8126d35b-5336-41ad-981d-f245c3e05665"
+        ],
+        "price": 1999,
+        "title": "The Last of Us",
+        "uuid": "77a94eec-38e0-4a08-a3d7-2be1007ef686"
+      },
+      {
+        "category_uuids": [
+          "5af3642a-2d97-40d1-aa82-c7f8758863fd"
+        ],
+        "price": 1999,
+        "title": "The Sims 4",
+        "uuid": "12dc6bb3-cd3f-412a-86fe-3c1dce867481"
+      },
+      {
+        "category_uuids": [
+          "78fcb98b-d820-4d79-a049-e2089b7ce87a"
+        ],
+        "price": 999,
+        "title": "The Witcher 3: Wild Hunt",
+        "uuid": "06520f6e-5096-4d49-a044-136357737eff"
+      },
+      {
+        "category_uuids": [
+          "8126d35b-5336-41ad-981d-f245c3e05665"
+        ],
+        "price": 4999,
+        "title": "Uncharted 4: A Thief's End",
+        "uuid": "5449c9d0-3399-44e1-bd63-f6cbb62c38ea"
+      }
+    ],
+    "meta": {
+      "total": 10
+    }
+  }

@@ -1,0 +1,70 @@
+{
+    "meta": {
+      "total": 9
+    },
+      "users": [
+      {
+        "avatar_url": "",
+        "email": "max2@gmail.com",
+        "name": "Max1",
+        "nickname": "",
+        "uuid": "9a208228-1fa0-4df8-ab3a-f83f1a6ed2af"
+      },
+      {
+        "avatar_url": "",
+        "email": "max8@gmail.com",
+        "name": "Max",
+        "nickname": "",
+        "uuid": "9881fa6d-bbc1-4f7d-970c-be7f740287a2"
+      },
+      {
+        "avatar_url": "",
+        "email": "max4@gmail.com",
+        "name": "Max",
+        "nickname": "",
+        "uuid": "ad4ee916-5312-4f89-a1bf-c36ac832e206"
+      },
+      {
+        "avatar_url": "",
+        "email": "max7@gmail.com",
+        "name": "Max",
+        "nickname": "",
+        "uuid": "636ee455-d8dd-48eb-9579-99538c7ff781"
+      },
+      {
+        "avatar_url": "",
+        "email": "max5@gmail.com",
+        "name": "Max",
+        "nickname": "",
+        "uuid": "8ed1e2da-eaaa-4ff1-990a-06bf51f86a9d"
+      },
+      {
+        "avatar_url": "",
+        "email": "max1@gmail.com",
+        "name": "Max1",
+        "nickname": "max1",
+        "uuid": "3cfe26ab-5455-49fa-a173-020adaa2d52d"
+      },
+      {
+        "avatar_url": "",
+        "email": "max3@gmail.com",
+        "name": "Max",
+        "nickname": "max3",
+        "uuid": "c2c8f767-85b4-47ec-b0e0-e76aefe9e209"
+      },
+      {
+        "avatar_url": "",
+        "email": "max6@gmail.com",
+        "name": "Max",
+        "nickname": "max4",
+        "uuid": "29ec2e32-bdb2-49c7-8a8c-765b67bf66b1"
+      },
+      {
+        "avatar_url": "",
+        "email": "max9@gmail.com",
+        "name": "Max",
+        "nickname": "max9",
+        "uuid": "515ce5db-c923-4025-82ca-59b604e32355"
+      }
+    ]
+  }

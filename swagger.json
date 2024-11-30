@@ -1,0 +1,2178 @@
+{
+    "components": {
+      "parameters": {
+        "CategoryUUID": {
+          "description": "Category UUID",
+          "in": "path",
+          "name": "category_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        },
+        "GameUUID": {
+          "description": "Game UUID",
+          "in": "path",
+          "name": "game_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        },
+        "GameUUIDList": {
+          "description": "Game UUID list. Limit is 10.",
+          "explode": false,
+          "in": "query",
+          "name": "game_uuid_list",
+          "schema": {
+            "items": {
+              "$ref": "#/components/schemas/UUID"
+            },
+            "maxItems": 10,
+            "type": "array"
+          },
+          "style": "form"
+        },
+        "KeepPayments": {
+          "description": "Keep payments on order deletion",
+          "in": "query",
+          "name": "keep_payments",
+          "schema": {
+            "$ref": "#/components/schemas/KeepPayments"
+          }
+        },
+        "Limit": {
+          "description": "maximum number of results to return",
+          "in": "query",
+          "name": "limit",
+          "schema": {
+            "$ref": "#/components/schemas/Limit"
+          }
+        },
+        "Offset": {
+          "description": "maximum number of results to return",
+          "in": "query",
+          "name": "offset",
+          "schema": {
+            "$ref": "#/components/schemas/Offset"
+          }
+        },
+        "OrderUUID": {
+          "description": "Order UUID",
+          "in": "path",
+          "name": "order_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        },
+        "PaymentUUID": {
+          "description": "Payment UUID",
+          "in": "path",
+          "name": "payment_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        },
+        "Query": {
+          "description": "search string",
+          "in": "query",
+          "name": "query",
+          "schema": {
+            "$ref": "#/components/schemas/Query"
+          }
+        },
+        "ReviewUUID": {
+          "description": "Review UUID",
+          "in": "path",
+          "name": "review_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        },
+        "ReviewsOrderBy": {
+          "description": "Order by specified field",
+          "in": "query",
+          "name": "order_by",
+          "schema": {
+            "$ref": "#/components/schemas/ReviewsOrderBy"
+          }
+        },
+        "ReviewsSortBy": {
+          "description": "Sort by specified field",
+          "in": "query",
+          "name": "sort_by",
+          "schema": {
+            "$ref": "#/components/schemas/ReviewsSortBy"
+          }
+        },
+        "UserUUID": {
+          "description": "User UUID",
+          "in": "path",
+          "name": "user_uuid",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UUID"
+          }
+        }
+      },
+      "responses": {
+        "ErrorResponse": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          },
+          "description": "Error"
+        }
+      },
+      "schemas": {
+        "Amount": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "Cart": {
+          "properties": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/CartItem"
+              },
+              "maxItems": 10,
+              "type": "array"
+            },
+            "total_price": {
+              "$ref": "#/components/schemas/TotalPrice"
+            },
+            "user_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "user_uuid",
+            "items"
+          ],
+          "type": "object"
+        },
+        "CartItem": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/NewCartItem"
+            },
+            {
+              "properties": {
+                "total_price": {
+                  "$ref": "#/components/schemas/TotalPrice"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "required": [
+                "item_uuid",
+                "quantity",
+                "total_price"
+              ]
+            }
+          ]
+        },
+        "Category": {
+          "properties": {
+            "name": {
+              "example": "Action RPG",
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            "uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "uuid",
+            "name"
+          ],
+          "type": "object"
+        },
+        "Email": {
+          "example": "max@gmail.com",
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+          "type": "string"
+        },
+        "EmptyCart": {
+          "properties": {
+            "items": {
+              "example": [],
+              "items": {
+                "$ref": "#/components/schemas/CartItem"
+              },
+              "type": "array"
+            },
+            "total_price": {
+              "example": 0,
+              "type": "integer"
+            },
+            "user_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "user_uuid",
+            "items"
+          ],
+          "type": "object"
+        },
+        "Error": {
+          "properties": {
+            "code": {
+              "type": "integer"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "type": "object"
+        },
+        "Game": {
+          "properties": {
+            "category_uuids": {
+              "items": {
+                "$ref": "#/components/schemas/UUID"
+              },
+              "type": "array"
+            },
+            "price": {
+              "example": 5999,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "title": {
+              "example": "The Witcher 3: Wild Hunt",
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            "uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "uuid",
+            "title",
+            "price",
+            "category_uuids"
+          ],
+          "type": "object"
+        },
+        "KeepPayments": {
+          "type": "boolean"
+        },
+        "Limit": {
+          "default": 10,
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "Login": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCredentials"
+            },
+            {
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          ]
+        },
+        "Meta": {
+          "properties": {
+            "total": {
+              "example": 10,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "total"
+          ],
+          "type": "object"
+        },
+        "Name": {
+          "example": "Max",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^\\S.+$",
+          "type": "string"
+        },
+        "NewCartItem": {
+          "properties": {
+            "item_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            },
+            "quantity": {
+              "example": 1,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "item_uuid",
+            "quantity"
+          ],
+          "type": "object"
+        },
+        "NewItem": {
+          "properties": {
+            "item_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "type": "object"
+        },
+        "NewOrder": {
+          "properties": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/NewCartItem"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "items"
+          ],
+          "type": "object"
+        },
+        "NewPayment": {
+          "properties": {
+            "order_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            },
+            "payment_method": {
+              "$ref": "#/components/schemas/PaymentType"
+            }
+          },
+          "required": [
+            "order_uuid",
+            "payment_method"
+          ],
+          "type": "object"
+        },
+        "NewReview": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/PatchReview"
+            },
+            {
+              "properties": {
+                "user_uuid": {
+                  "$ref": "#/components/schemas/UUID"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "required": [
+                "user_uuid",
+                "title",
+                "body",
+                "score"
+              ]
+            }
+          ]
+        },
+        "NewUser": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/PatchUser"
+            },
+            {
+              "required": [
+                "email",
+                "password",
+                "name",
+                "nickname"
+              ]
+            }
+          ]
+        },
+        "Nickname": {
+          "example": "max",
+          "maxLength": 100,
+          "minLength": 2,
+          "pattern": "^[a-zA-Z0-9_.+-]+$",
+          "type": "string"
+        },
+        "Offset": {
+          "default": 0,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "Order": {
+          "properties": {
+            "created_at": {
+              "$ref": "#/components/schemas/Timestamp"
+            },
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/CartItem"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "type": "array"
+            },
+            "status": {
+              "$ref": "#/components/schemas/OrderStatus"
+            },
+            "total_price": {
+              "$ref": "#/components/schemas/TotalPrice"
+            },
+            "updated_at": {
+              "$ref": "#/components/schemas/Timestamp"
+            },
+            "user_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            },
+            "uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "items",
+            "uuid",
+            "user_uuid",
+            "total_price",
+            "status",
+            "created_at",
+            "updated_at"
+          ],
+          "type": "object"
+        },
+        "OrderStatus": {
+          "default": "open",
+          "enum": [
+            "open",
+            "pending",
+            "overdue",
+            "canceled",
+            "completed"
+          ],
+          "type": "string"
+        },
+        "Password": {
+          "example": "password",
+          "maxLength": 100,
+          "minLength": 6,
+          "pattern": "^\\S.+$",
+          "type": "string",
+          "writeOnly": true
+        },
+        "PatchOrderStatus": {
+          "properties": {
+            "status": {
+              "enum": [
+                "canceled"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "PatchReview": {
+          "properties": {
+            "body": {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            "score": {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "title": {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "PatchUser": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCredentials"
+            },
+            {
+              "properties": {
+                "name": {
+                  "$ref": "#/components/schemas/Name"
+                },
+                "nickname": {
+                  "$ref": "#/components/schemas/Nickname"
+                }
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "Payment": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/NewPayment"
+            },
+            {
+              "properties": {
+                "amount": {
+                  "$ref": "#/components/schemas/Amount"
+                },
+                "created_at": {
+                  "$ref": "#/components/schemas/Timestamp"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/PaymentStatus"
+                },
+                "updated_at": {
+                  "$ref": "#/components/schemas/Timestamp"
+                },
+                "user_uuid": {
+                  "$ref": "#/components/schemas/UUID"
+                },
+                "uuid": {
+                  "$ref": "#/components/schemas/UUID"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "required": [
+                "order_uuid",
+                "payment_method",
+                "uuid",
+                "user_uuid",
+                "amount",
+                "status",
+                "created_at",
+                "updated_at"
+              ]
+            }
+          ]
+        },
+        "PaymentStatus": {
+          "default": "succeeded",
+          "enum": [
+            "processing",
+            "succeeded",
+            "canceled"
+          ],
+          "type": "string"
+        },
+        "PaymentType": {
+          "default": "card",
+          "enum": [
+            "card",
+            "paypal",
+            "wechat_pay",
+            "mir_pay"
+          ],
+          "type": "string"
+        },
+        "Query": {
+          "default": "",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "Review": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/NewReview"
+            },
+            {
+              "properties": {
+                "created_at": {
+                  "$ref": "#/components/schemas/Timestamp"
+                },
+                "updated_at": {
+                  "$ref": "#/components/schemas/Timestamp"
+                },
+                "uuid": {
+                  "$ref": "#/components/schemas/UUID"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "required": [
+                "uuid",
+                "user_uuid",
+                "item_uuid",
+                "title",
+                "body",
+                "score",
+                "created_at",
+                "updated_at"
+              ]
+            }
+          ]
+        },
+        "ReviewsOrderBy": {
+          "default": "asc",
+          "enum": [
+            "desc",
+            "asc"
+          ],
+          "type": "string"
+        },
+        "ReviewsSortBy": {
+          "default": "created_at",
+          "enum": [
+            "created_at",
+            "score",
+            "title"
+          ],
+          "type": "string"
+        },
+        "Status": {
+          "properties": {
+            "task_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "task_id"
+          ],
+          "type": "object"
+        },
+        "Timestamp": {
+          "format": "date-time",
+          "readOnly": true,
+          "type": "string"
+        },
+        "TotalPrice": {
+          "example": 5999,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "UUID": {
+          "example": "00000000-0000-4562-b3fc-2c963f66afa6",
+          "format": "uuid",
+          "maxLength": 36,
+          "minLength": 36,
+          "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[89abAB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}",
+          "type": "string"
+        },
+        "User": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/PatchUser"
+            },
+            {
+              "properties": {
+                "avatar_url": {
+                  "default": "",
+                  "type": "string"
+                },
+                "uuid": {
+                  "$ref": "#/components/schemas/UUID"
+                }
+              },
+              "type": "object"
+            },
+            {
+              "required": [
+                "uuid",
+                "avatar_url",
+                "email",
+                "name",
+                "nickname"
+              ]
+            }
+          ]
+        },
+        "UserCredentials": {
+          "properties": {
+            "email": {
+              "$ref": "#/components/schemas/Email"
+            },
+            "password": {
+              "$ref": "#/components/schemas/Password"
+            }
+          },
+          "type": "object"
+        },
+        "Wishlist": {
+          "properties": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/Game"
+              },
+              "maxItems": 10,
+              "type": "array"
+            },
+            "user_uuid": {
+              "$ref": "#/components/schemas/UUID"
+            }
+          },
+          "required": [
+            "user_uuid",
+            "items"
+          ],
+          "type": "object"
+        }
+      },
+      "securitySchemes": {
+        "BearerAuth": {
+          "description": "Bearer authorization header",
+          "scheme": "bearer",
+          "type": "http"
+        },
+        "TaskId": {
+          "description": "Task Id of the current backlog task",
+          "in": "header",
+          "name": "X-Task-Id",
+          "type": "apiKey"
+        }
+      }
+    },
+    "info": {
+      "contact": {
+        "email": "support@qa-playground.com",
+        "name": "Support team",
+        "url": "https://qa-playground.com"
+      },
+      "description": "A sample API for QA Playground. \n\nYou can paste this API json and view on external swagger clients like:\n- Swagger UI: https://petstore.swagger.io/?url=\u003CSWAGGER_URL\u003E\n- Redoc: https://redocly.github.io/redoc/?url=\u003CSWAGGER_URL\u003E\n\nStart making requests to the API:\n- Copy your Bearer token form a task to use in \"Authorisation: Bearer \u003CBEARER_TOKEN\u003E\" header (\"Authorise\" section in Swagger UI)\n- Make \"API Setup\" request to fill db with sample data\n",
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "termsOfService": "https://qa-playground.com/terms/",
+      "title": "Swagger",
+      "version": "1.0.0"
+    },
+    "openapi": "3.0.0",
+    "paths": {
+      "/categories": {
+        "get": {
+          "description": "Returns all categories from the system.\n",
+          "operationId": "ListCategories",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "categories": {
+                        "items": {
+                          "$ref": "#/components/schemas/Category"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    },
+                    "required": [
+                      "categories",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Categories response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all categories",
+          "tags": [
+            "categories"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/categories/{category_uuid}/games": {
+        "get": {
+          "description": "Returns games based on a single category UUID.",
+          "operationId": "GetGamesByCategory",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/CategoryUUID"
+            },
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "games": {
+                        "items": {
+                          "$ref": "#/components/schemas/Game"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    },
+                    "required": [
+                      "games",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Games response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get games by category",
+          "tags": [
+            "categories"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/games": {
+        "get": {
+          "description": "Returns all games from the system.\n",
+          "operationId": "ListGames",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            },
+            {
+              "$ref": "#/components/parameters/GameUUIDList"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "games": {
+                        "items": {
+                          "$ref": "#/components/schemas/Game"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    },
+                    "required": [
+                      "games",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Games response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all games",
+          "tags": [
+            "games"
+          ]
+        }
+      },
+      "/games/search": {
+        "get": {
+          "description": "Search all games by name.\n",
+          "operationId": "SearchGames",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/Query"
+            },
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "games": {
+                        "items": {
+                          "$ref": "#/components/schemas/Game"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    },
+                    "required": [
+                      "games",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Games response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Search games",
+          "tags": [
+            "games"
+          ]
+        }
+      },
+      "/games/{game_uuid}": {
+        "get": {
+          "description": "Returns a game based on a single UUID.",
+          "operationId": "GetGame",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/GameUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              },
+              "description": "Game response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a game",
+          "tags": [
+            "games"
+          ]
+        }
+      },
+      "/games/{game_uuid}/reviews": {
+        "get": {
+          "description": "Returns all reviews from the system that belong to a game.\n",
+          "operationId": "ListReviews",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/GameUUID"
+            },
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            },
+            {
+              "$ref": "#/components/parameters/ReviewsSortBy"
+            },
+            {
+              "$ref": "#/components/parameters/ReviewsOrderBy"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      },
+                      "reviews": {
+                        "items": {
+                          "$ref": "#/components/schemas/Review"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "reviews",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Reviews response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all reviews for a game",
+          "tags": [
+            "reviews"
+          ],
+          "x-premium": "premium"
+        },
+        "post": {
+          "description": "Create a new review. Limit is 1 review per user per game and 20 reviews per game total.",
+          "operationId": "CreateReview",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/GameUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewReview"
+                }
+              }
+            },
+            "description": "Review to add",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Review"
+                  }
+                }
+              },
+              "description": "Review response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Create a new review",
+          "tags": [
+            "reviews"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/orders/{order_uuid}": {
+        "delete": {
+          "description": "Deletes an order based on UUID supplied.\nKeep order payments by default.\n",
+          "operationId": "DeleteOrder",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/OrderUUID"
+            },
+            {
+              "$ref": "#/components/parameters/KeepPayments"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Order deleted"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Delete an order",
+          "tags": [
+            "orders"
+          ],
+          "x-premium": "premium"
+        },
+        "get": {
+          "description": "Returns an order based on UUID supplied.",
+          "operationId": "GetOrder",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/OrderUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              },
+              "description": "Order response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get an order",
+          "tags": [
+            "orders"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/orders/{order_uuid}/status": {
+        "patch": {
+          "description": "Update an order status.\nStatus can be changed only to \"canceled\".\nStatuses \"canceled\", \"completed\" cannot be changed.\n",
+          "operationId": "UpdateOrderStatus",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/OrderUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchOrderStatus"
+                }
+              }
+            },
+            "description": "New status",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              },
+              "description": "Order response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Update an order status",
+          "tags": [
+            "orders"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/payments/{payment_uuid}": {
+        "delete": {
+          "description": "Deletes a payment based on UUID supplied.",
+          "operationId": "DeletePayment",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/PaymentUUID"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Payment deleted"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Delete a payment",
+          "tags": [
+            "payments"
+          ],
+          "x-premium": "premium"
+        },
+        "get": {
+          "description": "Returns a payment based on UUID supplied.",
+          "operationId": "GetPayment",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/PaymentUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              },
+              "description": "Payment response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a payment",
+          "tags": [
+            "payments"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/reviews/{review_uuid}": {
+        "delete": {
+          "description": "Deletes a review based on UUID supplied.",
+          "operationId": "DeleteReview",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/ReviewUUID"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Review deleted"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Delete a review",
+          "tags": [
+            "reviews"
+          ],
+          "x-premium": "premium"
+        },
+        "patch": {
+          "description": "Update a review.",
+          "operationId": "UpdateReview",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/ReviewUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchReview"
+                }
+              }
+            },
+            "description": "Review patch data",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Review"
+                  }
+                }
+              },
+              "description": "Review response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Update a review",
+          "tags": [
+            "reviews"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/setup": {
+        "post": {
+          "description": "Sets up API, cleans DB and populates with sample data",
+          "operationId": "SetupAPI",
+          "responses": {
+            "205": {
+              "description": "Succesfull API set up"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "summary": "API Setup",
+          "tags": [
+            "setup"
+          ]
+        }
+      },
+      "/status": {
+        "get": {
+          "description": "Returns current statuses.\nMake sure you receive succesfull response before continue working with the API.\n",
+          "operationId": "GetStatus",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Status"
+                  }
+                }
+              },
+              "description": "Status response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get current status",
+          "tags": [
+            "setup"
+          ]
+        }
+      },
+      "/users": {
+        "get": {
+          "description": "Returns all users from the system that the user has access to.\n",
+          "operationId": "ListUsers",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      },
+                      "users": {
+                        "items": {
+                          "$ref": "#/components/schemas/User"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "users",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all users",
+          "tags": [
+            "users"
+          ]
+        },
+        "post": {
+          "description": "Create a new user. Limit is 20 users.",
+          "operationId": "CreateUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewUser"
+                }
+              }
+            },
+            "description": "User to add",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Create a new user",
+          "tags": [
+            "users"
+          ]
+        }
+      },
+      "/users/login": {
+        "post": {
+          "description": "Get a user using credentials.",
+          "operationId": "UserLogin",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            },
+            "description": "User credentials",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              },
+              "description": "Not found"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a user by email and password",
+          "tags": [
+            "users"
+          ]
+        }
+      },
+      "/users/{user_uuid}": {
+        "delete": {
+          "description": "Deletes a single user based on the UUID supplied.",
+          "operationId": "DeleteUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "User deleted"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Delete a user",
+          "tags": [
+            "users"
+          ]
+        },
+        "get": {
+          "description": "Returns a user based on a single UUID.",
+          "operationId": "GetUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a user",
+          "tags": [
+            "users"
+          ]
+        },
+        "patch": {
+          "description": "Update a user.",
+          "operationId": "UpdateUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchUser"
+                }
+              }
+            },
+            "description": "User patch data",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Update a user",
+          "tags": [
+            "users"
+          ]
+        }
+      },
+      "/users/{user_uuid}/avatar": {
+        "put": {
+          "description": "Update user with avatar.\nMaximum file size is 2MB.\nIMPORTANT: If request is successful fake gravatar url will be set as user avatar.\n",
+          "operationId": "UpdateUserAvatar",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "properties": {
+                    "avatar_file": {
+                      "description": "JPEG or PNG file with a maximum file size of 2MB",
+                      "format": "binary",
+                      "maxLength": 2097152,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "avatar_file"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Avatar file",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "description": "User response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Update users avatar",
+          "tags": [
+            "avatars"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/cart": {
+        "get": {
+          "description": "Returns a users cart by user UUID.\n",
+          "operationId": "GetCart",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              },
+              "description": "Cart response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a cart",
+          "tags": [
+            "cart"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/cart/add": {
+        "post": {
+          "description": "Add an item to users cart.\nIf the item is already in the cart, then the cart item quantity is equal to the new quantity.\nLimit is 100 for item quantity in cart.\nLimit is 10 items per user.\n",
+          "operationId": "AddToCart",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewCartItem"
+                }
+              }
+            },
+            "description": "Game UUID and quantity to add",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              },
+              "description": "Cart response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Add an item to users cart",
+          "tags": [
+            "cart"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/cart/change": {
+        "post": {
+          "description": "Change quantity for already existing item in users cart.",
+          "operationId": "ChangeInCart",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewCartItem"
+                }
+              }
+            },
+            "description": "Game UUID and quantity to change",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              },
+              "description": "Cart response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Change an item in users cart",
+          "tags": [
+            "cart"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/cart/clear": {
+        "post": {
+          "description": "Clear users cart. Removes all items from cart.",
+          "operationId": "ClearCart",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EmptyCart"
+                  }
+                }
+              },
+              "description": "Cart response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Clear users cart",
+          "tags": [
+            "cart"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/cart/remove": {
+        "post": {
+          "description": "Removes an item from users cart.",
+          "operationId": "RemoveItemFromCart",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewItem"
+                }
+              }
+            },
+            "description": "Game UUID to remove",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              },
+              "description": "Cart response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Removes an item from users cart",
+          "tags": [
+            "cart"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/orders": {
+        "get": {
+          "description": "Returns all orders by user UUID sorted by newest first. \n",
+          "operationId": "ListOrders",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            },
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      },
+                      "orders": {
+                        "items": {
+                          "$ref": "#/components/schemas/Order"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "orders",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Orders response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all orders for a user",
+          "tags": [
+            "orders"
+          ],
+          "x-premium": "premium"
+        },
+        "post": {
+          "description": "Create a new order. An order is created with status \"open\".\n\nLimit is 10 per user.\n\nOrder available statuses are: \"open\", \"pending\", \"overdue\", \"canceled\", \"completed\".\n\nWhen payment for the order is created that order status is changed for \"pending\".\n\nIf the payment become \"succeeded\" respective order status is changed for \"completed\".\n\nIf the payment become \"canceled\" respective order status is changed for \"overdue\".\n\nStatuses except \"canceled\", \"completed\" can be changed to \"canceled\" using \"Update an order status\" request.\n",
+          "operationId": "CreateOrder",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewOrder"
+                }
+              }
+            },
+            "description": "Order to add",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              },
+              "description": "Order response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Create a new order",
+          "tags": [
+            "orders"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/payments": {
+        "get": {
+          "description": "Returns all payments by user UUID sorted by newest first.\n",
+          "operationId": "ListPayments",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            },
+            {
+              "$ref": "#/components/parameters/Offset"
+            },
+            {
+              "$ref": "#/components/parameters/Limit"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                      },
+                      "payments": {
+                        "items": {
+                          "$ref": "#/components/schemas/Payment"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "payments",
+                      "meta"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "text/csv": {
+                  "schema": {
+                    "description": "CSV list of payments",
+                    "example": "uuid,user_uuid,order_uuid,amount,payment_method,status,created_at,updated_at\n76072d5a-678a-4de8-a01b-88a5cd6a97cd,729854e0-abd3-4c4b-8866-6466f8971ce6,d2f2bc1f-8f2e-4a2b-8380-8dd9f774685b,120,paypal,canceled,2024-03-21T14:29:12.953586Z,2024-03-21T14:29:18.262077Z\n",
+                    "type": "string"
+                  }
+                }
+              },
+              "description": "Payments response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "List all payments for user",
+          "tags": [
+            "payments"
+          ],
+          "x-premium": "premium"
+        },
+        "post": {
+          "description": "Create a new automatic payment for an order.\nAn order is created with status \"processing\". Processing can take some time.\nOrder available statuses are: \"processing\", \"succeeded\", \"canceled\".\n\nIf the payment become \"succeeded\" respective order status is changed for \"completed\".\n\nIf the payment become \"canceled\" respective order status is changed for \"overdue\".\n\nLimit is 10 per user.\n",
+          "operationId": "CreatePayment",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewPayment"
+                }
+              }
+            },
+            "description": "New payment",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              },
+              "description": "Payment response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Create a new payment",
+          "tags": [
+            "payments"
+          ],
+          "x-premium": "premium"
+        }
+      },
+      "/users/{user_uuid}/wishlist": {
+        "get": {
+          "description": "Returns a users wishlist by user UUID.\n",
+          "operationId": "GetWishlist",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Wishlist"
+                  }
+                }
+              },
+              "description": "Wishlist response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Get a wishlist",
+          "tags": [
+            "wishlists"
+          ]
+        }
+      },
+      "/users/{user_uuid}/wishlist/add": {
+        "post": {
+          "description": "Add an item to wishlist. If the item is already in the wishlist no additional records will be created. Limit is 10 items.",
+          "operationId": "AddToWishlist",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewItem"
+                }
+              }
+            },
+            "description": "Game UUID to add",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Wishlist"
+                  }
+                }
+              },
+              "description": "Wishlist response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Add an item to users wishlist",
+          "tags": [
+            "wishlists"
+          ]
+        }
+      },
+      "/users/{user_uuid}/wishlist/remove": {
+        "post": {
+          "description": "Remove item to wishlist.",
+          "operationId": "RemoveFromWishlist",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserUUID"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewItem"
+                }
+              }
+            },
+            "description": "Game UUID to remove",
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Wishlist"
+                  }
+                }
+              },
+              "description": "Wishlist response"
+            },
+            "default": {
+              "$ref": "#/components/responses/ErrorResponse"
+            }
+          },
+          "summary": "Remove an item from users wishlist",
+          "tags": [
+            "wishlists"
+          ]
+        }
+      }
+    },
+    "security": [
+      {
+        "BearerAuth": [],
+        "TaskId": []
+      }
+    ],
+    "servers": [
+      {
+        "description": "server",
+        "url": "/api/v1"
+      }
+    ],
+    "tags": [
+      {
+        "description": "Techincal methods to setup and reset API",
+        "name": "setup"
+      },
+      {
+        "description": "Users management",
+        "name": "users"
+      },
+      {
+        "description": "Wishlists management",
+        "name": "wishlists"
+      },
+      {
+        "description": "Games management",
+        "name": "games"
+      },
+      {
+        "description": "(Premium) Games categories management",
+        "name": "categories"
+      },
+      {
+        "description": "(Premium) Users avatars management",
+        "name": "avatars"
+      },
+      {
+        "description": "(Premium) Cart management",
+        "name": "cart"
+      },
+      {
+        "description": "(Premium) Orders management",
+        "name": "orders"
+      },
+      {
+        "description": "(Premium) Payments management",
+        "name": "payments"
+      },
+      {
+        "description": "(Premium) Reviews management",
+        "name": "reviews"
+      }
+    ]
+  }
