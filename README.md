@@ -2,6 +2,8 @@
 
 > for screenshots please refer to `sss` folder.
 
+> for extra info please refer to `REPORT.md` file.
+
 ## api-3; create a new user
 on create a new user on dev when we enter username that already exists it saving with empty username but email validation is working fine. however on release it is not saving the user with same username and email. it says username already exists, and email already exists.
 
